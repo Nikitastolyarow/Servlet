@@ -1,24 +1,24 @@
 package ru.netology.servlet;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.netology.config.JavaConfig;
 import ru.netology.controller.PostController;
-import ru.netology.repository.PostRepository;
-import ru.netology.service.PostService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
-    private static final String  API_POSTS = "/api/posts";
-  private static final String  API_POSTSD = "/api/posts/\\d+";
+    private static final String API_POSTS = "/api/posts";
+    private static final String API_POSTSD = "/api/posts/\\d+";
     private PostController controller;
 
     @Override
     public void init() {
-        final var repository = new PostRepository();
-        final var service = new PostService(repository);
-        controller = new PostController(service);
+        final var context = new AnnotationConfigApplicationContext(JavaConfig.class);
+        controller = context.getBean(PostController.class);
     }
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
         // если деплоились в root context, то достаточно этого
@@ -52,8 +52,9 @@ public class MainServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-  private long extractIdFromPath (String path){
-      return Long.parseLong(path.substring(path.lastIndexOf("/")));
-  }
+
+    private long extractIdFromPath(String path) {
+        return Long.parseLong(path.substring(path.lastIndexOf("/")));
+    }
 }
 

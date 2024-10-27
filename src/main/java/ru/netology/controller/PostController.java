@@ -11,15 +11,15 @@ import java.io.Reader;
 public class PostController {
     public static final String APPLICATION_JSON = "application/json";
     private final PostService service;
-  private static final Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
     public PostController(PostService service) {
         this.service = service;
     }
 
-  public void setJsonResponse(HttpServletResponse response) {
-           response.setContentType(APPLICATION_JSON);
-  }
+    public void setJsonResponse(HttpServletResponse response) {
+        response.setContentType(APPLICATION_JSON);
+    }
 
     public void all(HttpServletResponse response) throws IOException {
         setJsonResponse(response);
@@ -29,9 +29,9 @@ public class PostController {
 
     public void getById(long id, HttpServletResponse response) throws IOException {
         // TODO: deserialize request & serialize response
-      setJsonResponse(response);
-      final var data = service.getById(id);
-      response.getWriter().print(gson.toJson(data));
+        setJsonResponse(response);
+        final var data = service.getById(id);
+        response.getWriter().print(gson.toJson(data));
 
     }
 
@@ -44,9 +44,9 @@ public class PostController {
 
     public void removeById(long id, HttpServletResponse response) throws IOException {
         // TODO: deserialize request & serialize response
-      setJsonResponse(response);
-      service.removeById(id);
-      response.getWriter().print("{\"status\": \"success\"}");
+        setJsonResponse(response);
+        service.removeById(id);
+        response.getWriter().print("{\"status\": \"success\"}");
 
     }
 }
